@@ -1,4 +1,8 @@
-
+/**
+ * class story element including name of a story
+ * @author Dado
+ *
+ */
 public class StoryElement {
 	
 	protected String name;
@@ -7,7 +11,9 @@ public class StoryElement {
 		super();
 		this.name = name;
 	}
-	
+	/**
+	 * if not given name for story by default its STElement
+	 */
 	public StoryElement(){
 		this("STElement");
 	}
