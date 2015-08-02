@@ -33,6 +33,26 @@ public class Server extends JFrame {
 	JTextField textField = new JTextField();
 
 	public Server() {
+		send.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					bw.write(textField.getText());
+					bw.newLine();
+					bw.flush();
+					if (textField.getText().length() > 0) {
+						textArea.append("Server: " + textField.getText() + "\n");
+
+						textField.setText("");
+					}
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+			}
+		});
 		JFrame window = new JFrame();
 
 		JLabel label = new JLabel();
@@ -62,38 +82,18 @@ public class Server extends JFrame {
 			e.printStackTrace();
 		}
 		try {
-			while (br.ready()) {
+			while (true) {
 				String s = br.readLine();
 				if (s.length() > 0) {
 					chat(s);
-					
+
 				}
 			}
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		send.addActionListener(new ActionListener() {
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					bw.write(textField.getText());
-					bw.newLine();
-					bw.flush();
-					if (textField.getText().length() > 0) {
-						textArea.append("Server: " + textField.getText() + "\n");
-
-						textField.setText("");
-					}
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-
-			}
-		});
-		
 	}
 
 	public void openUrl(String s) {
@@ -111,8 +111,8 @@ public class Server extends JFrame {
 			}
 		}
 	}
-	
-	public void chat(String s){
+
+	public void chat(String s) {
 		textArea.append("Client: " + s + "\n");
 	}
 
@@ -121,10 +121,10 @@ public class Server extends JFrame {
 			path = s.substring(s.indexOf(" "), s.length());
 			File file = new File(path);
 			String[] list = file.list();
-			for(int i = 0; i < list.length; i++){
+			for (int i = 0; i < list.length; i++) {
 				textArea.append(list[i] + "\n");
 			}
-			
+
 		}
 	}
 

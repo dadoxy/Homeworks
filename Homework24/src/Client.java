@@ -32,6 +32,28 @@ public class Client extends JFrame {
 	JTextField textField = new JTextField();
 
 	public Client() {
+		send.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+
+					bw.write(textField.getText());
+					bw.newLine();
+					bw.flush();
+					if (textField.getText().length() > 0) {
+						textArea.append("Client: " + textField.getText() + "\n");
+
+						textField.setText("");
+					}
+
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+			}
+		});
 		JFrame window = new JFrame();
 
 		JLabel label = new JLabel();
@@ -58,8 +80,9 @@ public class Client extends JFrame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 		try {
-			while (br.ready()) {
+			while (true) {
 				String s = br.readLine();
 				if (s.length() > 0) {
 					chat(s);
@@ -70,29 +93,6 @@ public class Client extends JFrame {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-	
-		send.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					
-					bw.write(textField.getText());
-					bw.newLine();
-					bw.flush();
-					if (textField.getText().length() > 0) {
-						textArea.append("Client: " + textField.getText() + "\n");
-
-						textField.setText("");
-					}
-
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-
-			}
-		});
 	}
 
 	public void openUrl(String s) {
