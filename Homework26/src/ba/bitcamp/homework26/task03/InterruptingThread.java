@@ -15,7 +15,7 @@ public class InterruptingThread extends JFrame {
 	private JLabel label = new JLabel();
 	private JButton button = new JButton("Stop");
 	private int letter = 97;
-	private boolean start = true;
+	
 
 	public InterruptingThread() {
 
@@ -27,23 +27,21 @@ public class InterruptingThread extends JFrame {
 		setSize(400, 400);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
+
+		MyThread t1 = new MyThread();
+		t1.start();
 		button.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (start == true) {
-					start = false;
-					button.setText("Resume");
-				} else {
-					start = true;
-					
-					button.setText("Stop");
-				}
+				
+				t1.interrupt();
+				
 			}
+			
+			
+			
 		});
-
-		MyThread t1 = new MyThread();
-		t1.start();
 
 
 	}
@@ -52,12 +50,11 @@ public class InterruptingThread extends JFrame {
 
 		@Override
 		public void run() {
-			while (start) {
+			while (true) {
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					return;
 				}
 				label.setText(label.getText() + (char) letter);
 				letter++;
