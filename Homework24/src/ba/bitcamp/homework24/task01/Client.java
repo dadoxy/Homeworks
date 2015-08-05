@@ -103,7 +103,7 @@ public class Client extends JFrame {
 
 	public void openUrl(String s) {
 
-		if (s.contains("/web")) {
+		if (s.startsWith("/web")) {
 			path = s.substring(s.indexOf(" "), s.length());
 			try {
 				Desktop.getDesktop().browse(new URI("http://" + path));
@@ -123,7 +123,7 @@ public class Client extends JFrame {
 	}
 
 	public void listDirectories(String s) {
-		if (s.contains("/list")) {
+		if (s.startsWith("/list")) {
 			path = s.substring(s.indexOf(" "), s.length());
 			File file = new File(path);
 			String[] list = file.list();
@@ -135,7 +135,7 @@ public class Client extends JFrame {
 	}
 
 	public void deleteFile(String s) {
-		if (s.contains("/delete")) {
+		if (s.startsWith("/delete")) {
 			path = s.substring(s.indexOf(" "), s.length());
 			File file = new File(path);
 			file.delete();
@@ -143,7 +143,7 @@ public class Client extends JFrame {
 	}
 
 	public void openFile(String s) {
-		if (s.contains("/open")) {
+		if (s.startsWith("/open")) {
 			path = s.substring(s.indexOf(" "), s.length());
 
 			try {
