@@ -8,6 +8,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class Client {
+	
+	private static final int BUFFER_SIZE = 1024;
 
 	public static void main(String[] args) {
 
@@ -18,10 +20,10 @@ public class Client {
 			FileInputStream fis = new FileInputStream(new File("doge.jpg"));
 			OutputStream osw = client.getOutputStream();
 			
-			byte[] bytes = new byte[1024];
+			byte[] bytes = new byte[BUFFER_SIZE];
 			int readBytes;
 			
-			while((readBytes = fis.read(bytes, 0, 1024)) > 0){
+			while((readBytes = fis.read(bytes, 0, BUFFER_SIZE)) > 0){
 				osw.write(bytes, 0, readBytes);
 			}
 			System.out.println("Sent !");

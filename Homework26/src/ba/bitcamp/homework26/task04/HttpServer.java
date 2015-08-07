@@ -15,6 +15,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class HttpServer {
+	
+	private static final int BUFFER_SIZE = 1024;
 
 	public static void main(String[] args) {
 
@@ -52,14 +54,14 @@ public class HttpServer {
 			String htmlDoc = "";
 
 			String fromClient = br.readLine();
-			String adress = "files.html";
+			String adress = "";
 			String[] adresses = fromClient.split(" ");
 
 			if (adresses[1].equals("/" + f.getName())) {
+				photoUploader(client, f);
+			}else{
 				adress = "/" + f.getName();
-			}
-
-			if (adress.equals("files.html")) {
+				
 				fileReader = new BufferedReader(
 						new FileReader(new File(adress)));
 
@@ -82,8 +84,7 @@ public class HttpServer {
 				bw.write(htmlDoc);
 				bw.newLine();
 				bw.flush();
-			}else
-				photoUploader(client, f);
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -97,9 +98,9 @@ public class HttpServer {
 			FileInputStream reader = new FileInputStream(new File(f.getName()));
 			OutputStream writer = client.getOutputStream();
 			
-			byte[] bytes = new byte[1024];
+			byte[] bytes = new byte[BUFFER_SIZE];
 			int readBytes;
-			while((readBytes = reader.read(bytes, 0, 1024)) > 0){
+			while((readBytes = reader.read(bytes, 0, BUFFER_SIZE)) > 0){
 				writer.write(bytes, 0, readBytes);
 			}
 			System.out.println("Sent");
@@ -117,13 +118,14 @@ public class HttpServer {
 
 		try {
 			InputStream is = client.getInputStream();
+			System.out.println(is.available());
 			FileOutputStream fos = new FileOutputStream(f);
 
-			byte[] bytes = new byte[1024];
+			byte[] bytes = new byte[BUFFER_SIZE];
 
 			int readBytes;
 
-			while ((readBytes = is.read(bytes, 0, 1024)) > 0) {
+			while ((readBytes = is.read(bytes, 0, BUFFER_SIZE)) > 0) {
 				fos.write(bytes, 0, readBytes);
 			}
 
