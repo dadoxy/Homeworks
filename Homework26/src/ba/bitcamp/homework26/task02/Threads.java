@@ -31,7 +31,7 @@ public class Threads implements Runnable {
 
 	@Override
 	public void run() {
-		if (name.equals("Fir	st")) {
+		if (name.equals("First")) {
 			for (int i = 1; i <= 10; i++) {
 				System.out.println(i);
 				try {
