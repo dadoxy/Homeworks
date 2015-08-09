@@ -53,13 +53,15 @@ public class Task2 extends JFrame {
 		for (int i = 0; i < 5; i++) {
 			Worker worker = new Worker();
 			worker.start();
+			workers.add(worker);
+		}
+		for (int i = 0; i < workers.size(); i++) {
 			try {
-				worker.join();
+				workers.get(i).join();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			workers.add(worker);
 		}
 	}
 
@@ -67,13 +69,14 @@ public class Task2 extends JFrame {
 		@Override
 		public void run() {
 			while (!queue.isEmpty()) {
-				try {
-					Runnable worker = queue.take();
 
-					worker.run();
-				} catch (InterruptedException e) {
+				Runnable worker = queue.poll();
+				if (worker == null) {
 					break;
 				}
+
+				worker.run();
+
 			}
 		}
 	}

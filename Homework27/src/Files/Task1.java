@@ -15,6 +15,7 @@ public class Task1 {
 	private static BufferedReader br = null;
 	private static Integer counter = 0;
 	private static char test;
+	static Object lock = new Object();
 
 	public static void main(String[] args) {
 		queue = new LinkedBlockingQueue<Runnable>();
@@ -32,17 +33,21 @@ public class Task1 {
 				queue.add(new Task(br.readLine(), test));
 			}
 			workers = new ArrayList<Worker>();
+
 			for (int i = 0; i < 4; i++) {
 				Worker worker = new Worker();
 				worker.start();
+				workers.add(worker);
+
+			}
+			for (int i = 0; i < workers.size(); i++) {
 				try {
-					worker.join();
+					workers.get(i).join();
 
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				workers.add(worker);
 			}
 
 		} catch (FileNotFoundException e) {
@@ -61,15 +66,11 @@ public class Task1 {
 		public void run() {
 			while (!queue.isEmpty()) {
 
-				try {
-
-					Runnable work = queue.take();
-					work.run();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				Runnable work = queue.poll();
+				if (work == null) {
+					break;
 				}
-
+				work.run();
 			}
 		}
 	}
@@ -91,7 +92,7 @@ public class Task1 {
 				if (Character.toString(test).equalsIgnoreCase(
 						Character.toString(s.charAt(i)))) {
 
-					synchronized (counter) {
+					synchronized (lock) {
 						counter++;
 						System.out.println(counter);
 					}
